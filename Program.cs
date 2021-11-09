@@ -19,11 +19,11 @@ namespace SharpEngine {
             var window = Glfw.CreateWindow(1024, 768, "SharpEngine", Monitor.None, Window.None);
             Glfw.MakeContextCurrent(window);
             Import(Glfw.GetProcAddress);
-
+            
             float[] vertices = new float[] {
                 -.5f, -.5f, 0f,
                 .5f, -.5f, 0f,
-                0f, .5f, 0f,
+                0f, .5f, 0f
             };
             
             // Load vertices into a buffer
@@ -31,7 +31,6 @@ namespace SharpEngine {
             var vertexBuffer = glGenBuffer();
             glBindVertexArray(vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-            
             unsafe {
                 fixed (float* vertex = &vertices[0]) {
                     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, vertex, GL_STATIC_DRAW);
@@ -45,13 +44,9 @@ namespace SharpEngine {
             in vec3 pos;
 
             void main() {
-                gl_position = vec4(pos.x, pos.y, pos.z, 1.0, 0);
+                gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+            }
             ";
-            
-            // Create vertex shader
-            var vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, vertexShaderSource);
-            glCompileShader(vertexShader);
 
             string fragmentShaderSource = @"
             #version 330 core
@@ -61,6 +56,11 @@ namespace SharpEngine {
                   result = vec4(1, 0, 0, 1);
             }
             ";
+
+            // create vertex shader
+            var vertexShader = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(vertexShader, vertexShaderSource);
+            glCompileShader(vertexShader);
             
             // Create fragment shader
             var fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
