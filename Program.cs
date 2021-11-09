@@ -5,9 +5,8 @@ namespace SharpEngine
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            using (var window = new NativeWindow(800, 600, "MyWindowTitle"))
+        static void Main(string[] args) {
+            var window = new NativeWindow(800, 600, "MyWindowTitle");
             {
                 // Main application loop
                 while (!window.IsClosing)
