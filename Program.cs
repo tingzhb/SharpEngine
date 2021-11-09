@@ -32,17 +32,28 @@ namespace SharpEngine
                 glDrawArrays(GL_TRIANGLES, 0, 3);
                 glFlush();
                 
-                vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
-                vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
-                
-                vertices[3] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
-                vertices[4] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
-                
-                vertices[7] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
-                vertices[6] = Convert.ToSingle(Math.Sin(radians)) * 0.5f;
+                // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
+                // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
+                //
+                // vertices[3] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
+                // vertices[4] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
+                //
+                // vertices[6] = Convert.ToSingle(Math.Sin(radians)) * 0.5f;
+                // vertices[7] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
 
-                radians += 0.0001;
+
+                vertices[0] = Convert.ToSingle(vertices[0] * Math.Cos(radians) - vertices[1] * Math.Sin(radians));
+                vertices[1] = Convert.ToSingle(vertices[0] * Math.Sin(radians) + vertices[1] * Math.Cos(radians));
                 
+                vertices[3] = Convert.ToSingle(vertices[3] * Math.Cos(radians) - vertices[4] * Math.Sin(radians));
+                vertices[4] = Convert.ToSingle(vertices[3] * Math.Sin(radians) + vertices[4] * Math.Cos(radians));
+                
+                vertices[6] = Convert.ToSingle(vertices[6] * Math.Cos(radians) - vertices[7] * Math.Sin(radians));
+                vertices[7] = Convert.ToSingle(vertices[6] * Math.Sin(radians) + vertices[7] * Math.Cos(radians));
+                
+                Console.WriteLine(vertices[7]);
+                
+                radians += 0.000001;
 
                 UpdateTriangleBuffer();
             }
