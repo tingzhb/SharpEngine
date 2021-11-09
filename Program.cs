@@ -20,8 +20,8 @@ namespace SharpEngine {
                 glFlush();
             }
         }
+        
         private static unsafe void LoadTriangleIntoBuffer() {
-
             float[] vertices = new float[]
             {
                 -.5f, -.5f, 0f,
@@ -42,8 +42,8 @@ namespace SharpEngine {
             }
             glEnableVertexAttribArray(0);
         }
+        
         private static void CreateShaderProgram() {
-
             // create vertex shader
             var vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderSource(vertexShader, File.ReadAllText("shaders/red-triangle.vert"));
@@ -61,8 +61,8 @@ namespace SharpEngine {
             glLinkProgram(program);
             glUseProgram(program);
         }
+        
         private static Window CreateWindow() {
-
             Glfw.Init();
             Glfw.WindowHint(Hint.ClientApi, ClientApi.OpenGL);
             Glfw.WindowHint(Hint.ContextVersionMajor, 3);
