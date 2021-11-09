@@ -15,6 +15,7 @@ namespace SharpEngine
             // vertex 3 x, y, z
             0f, .5f, 0f
         };
+        private static double radians;
         
         static void Main(string[] args) {
             var window = CreateWindow();
@@ -30,11 +31,19 @@ namespace SharpEngine
                 glClear(GL_COLOR_BUFFER_BIT);
                 glDrawArrays(GL_TRIANGLES, 0, 3);
                 glFlush();
-                vertices[0] -= 0.0001f;
-                vertices[1] -= 0.0001f;
-                vertices[3] += 0.0001f;
-                vertices[4] -= 0.0001f;
-                vertices[7] += 0.0001f;
+                
+                vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
+                vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
+                
+                vertices[3] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
+                vertices[4] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
+                
+                vertices[7] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
+                vertices[6] = Convert.ToSingle(Math.Sin(radians)) * 0.5f;
+
+                radians += 0.0001;
+                
+
                 UpdateTriangleBuffer();
             }
         }
