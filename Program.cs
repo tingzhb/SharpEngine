@@ -41,9 +41,9 @@ namespace SharpEngine
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
                 ClearScreen();
-                Render();
+                Render(window);
                 
-                // // Move Right
+                // Move Right
                 // for (int i = vertexX; i < vertices.Length; i+= vertexSize) {
                 //     vertices[i] += 0.0001f;
                 // }
@@ -52,16 +52,16 @@ namespace SharpEngine
                 // for (int i = vertexY; i < vertices.Length; i+= vertexSize) {
                 //     vertices[i] -= 0.0001f;
                 // }
-                //
+                
                 // Scale Down
                 // for (int i = 0; i < vertices.Length; i++) {
                 //     vertices[i] *= 0.9999f;
                 // }
                 //
                 //Scale Up
-                // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i] *= 1.0001f;
-                // }
+                for (int i = 0; i < vertices.Length; i++) {
+                    vertices[i] *= 1.001f;
+                }
 
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
                 // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
@@ -89,9 +89,10 @@ namespace SharpEngine
                 UpdateTriangleBuffer();
             }
         }
-        private static void Render() {
+        private static void Render(Window window) {
             glDrawArrays(GL_TRIANGLES, 0, vertices.Length/vertexSize);
-            glFlush();
+            // glFlush();
+            Glfw.SwapBuffers(window);
         }
         private static void ClearScreen() {
             glClearColor(.0f, .05f, .2f, 1);
@@ -145,7 +146,7 @@ namespace SharpEngine
             Glfw.WindowHint(Hint.Decorated, true);
             Glfw.WindowHint(Hint.OpenglProfile, Profile.Core);
             Glfw.WindowHint(Hint.OpenglForwardCompatible, Constants.True);
-            Glfw.WindowHint(Hint.Doublebuffer, Constants.False);
+            // Glfw.WindowHint(Hint.Doublebuffer, Constants.False);
 
             // create and launch a window
             var window = Glfw.CreateWindow(1024, 768, "SharpEngine", Monitor.None, Window.None);
