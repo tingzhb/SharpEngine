@@ -35,14 +35,19 @@ namespace SharpEngine
                 ClearScreen();
                 Render();
                 
-                // Move Right
-                for (int i = vertexX; i < vertices.Length; i+= vertexSize) {
-                    vertices[i] += 0.0001f;
-                }
-                
-                // Move Down
-                for (int i = vertexY; i < vertices.Length; i+= vertexSize) {
-                    vertices[i] -= 0.0001f;
+                // // Move Right
+                // for (int i = vertexX; i < vertices.Length; i+= vertexSize) {
+                //     vertices[i] += 0.0001f;
+                // }
+                //
+                // // Move Down
+                // for (int i = vertexY; i < vertices.Length; i+= vertexSize) {
+                //     vertices[i] -= 0.0001f;
+                // }
+                //
+                // Scale Down
+                for (int i = 0; i < vertices.Length; i++) {
+                    vertices[i] *= 0.9999f;
                 }
                 
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
