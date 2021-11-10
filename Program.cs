@@ -15,6 +15,10 @@ namespace SharpEngine
             // vertex 3 x, y, z
             0f, .5f, 0f
         };
+
+        private const int vertexX = 0;
+        private const int vertexSize = 3;
+        
         private static double radians;
         
         static void Main(string[] args) {
@@ -27,10 +31,12 @@ namespace SharpEngine
             // engine rendering loop
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
-                glClearColor(.0f, .05f, .2f, 1);
-                glClear(GL_COLOR_BUFFER_BIT);
-                glDrawArrays(GL_TRIANGLES, 0, 3);
-                glFlush();
+                ClearScreen();
+                Render();
+
+                for (int i = vertexX; i < vertices.Length; i+= vertexSize) {
+                    vertices[i] += 0.0001f;
+                }
                 
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
                 // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
@@ -42,21 +48,29 @@ namespace SharpEngine
                 // vertices[7] = Convert.ToSingle(Math.Cos(radians)) * 0.5f;
 
 
-                vertices[0] = Convert.ToSingle(vertices[0] * Math.Cos(radians) - vertices[1] * Math.Sin(radians));
-                vertices[1] = Convert.ToSingle(vertices[0] * Math.Sin(radians) + vertices[1] * Math.Cos(radians));
-                
-                vertices[3] = Convert.ToSingle(vertices[3] * Math.Cos(radians) - vertices[4] * Math.Sin(radians));
-                vertices[4] = Convert.ToSingle(vertices[3] * Math.Sin(radians) + vertices[4] * Math.Cos(radians));
-                
-                vertices[6] = Convert.ToSingle(vertices[6] * Math.Cos(radians) - vertices[7] * Math.Sin(radians));
-                vertices[7] = Convert.ToSingle(vertices[6] * Math.Sin(radians) + vertices[7] * Math.Cos(radians));
-                
-                Console.WriteLine(vertices[7]);
-                
-                radians += 0.000001;
+                // vertices[0] = Convert.ToSingle(vertices[0] * Math.Cos(radians) - vertices[1] * Math.Sin(radians));
+                // vertices[1] = Convert.ToSingle(vertices[0] * Math.Sin(radians) + vertices[1] * Math.Cos(radians));
+                //
+                // vertices[3] = Convert.ToSingle(vertices[3] * Math.Cos(radians) - vertices[4] * Math.Sin(radians));
+                // vertices[4] = Convert.ToSingle(vertices[3] * Math.Sin(radians) + vertices[4] * Math.Cos(radians));
+                //
+                // vertices[6] = Convert.ToSingle(vertices[6] * Math.Cos(radians) - vertices[7] * Math.Sin(radians));
+                // vertices[7] = Convert.ToSingle(vertices[6] * Math.Sin(radians) + vertices[7] * Math.Cos(radians));
+                //
+                // Console.WriteLine(vertices[7]);
+                //
+                // radians += 0.000001;
 
                 UpdateTriangleBuffer();
             }
+        }
+        private static void Render() {
+            glDrawArrays(GL_TRIANGLES, 0, vertices.Length/vertexSize);
+            glFlush();
+        }
+        private static void ClearScreen() {
+            glClearColor(.0f, .05f, .2f, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
         }
 
         static void CreateShaderProgram() {
@@ -86,7 +100,7 @@ namespace SharpEngine
             glBindVertexArray(vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
             UpdateTriangleBuffer();
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * sizeof(float), NULL);
+            glVertexAttribPointer(0, vertexSize, GL_FLOAT, false, vertexSize * sizeof(float), NULL);
 
             glEnableVertexAttribArray(0);
         }
