@@ -18,6 +18,18 @@ namespace SharpEngine
             this.y = y;
             this.z = 0;
         }
+        public static Vector operator * (Vector v, float f) {
+            return new Vector(v.x * f, v.y * f, v.z * f);
+        }
+        public static Vector operator + (Vector v, float f) {
+            return new Vector(v.x + f, v.y + f, v.z + f);
+        }
+        public static Vector operator - (Vector v, float f) {
+            return new Vector(v.x - f, v.y - f, v.z - f);
+        }
+        public static Vector operator / (Vector v, float f) {
+            return new Vector(v.x / f, v.y / f, v.z / f);
+        }
     }
     
     class Program
@@ -31,8 +43,6 @@ namespace SharpEngine
             new Vector(.6f, .4f),
             new Vector(.5f, .6f)
         };
-        
-        private const int vertexSize = 3;
         
         private static double radians;
         
@@ -50,9 +60,9 @@ namespace SharpEngine
                 Render(window);
                 
                 // Move Right
-                // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i].x += 0.001f;
-                // }
+                for (int i = 0; i < vertices.Length; i++) {
+                    vertices[i].x += 0.001f;
+                }
                 
                 // // Move Down
                 // for (int i = 0; i < vertices.Length; i++) {
@@ -61,15 +71,13 @@ namespace SharpEngine
                 
                 // Scale Down
                 // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i].x *= 0.99f;
-                //     vertices[i].y *= 0.99f;
+                //     vertices[i] *= 0.99f;
                 // }
                 
                 //Scale Up
-                for (int i = 0; i < vertices.Length; i++) {
-                    vertices[i].x *= 1.001f;
-                    vertices[i].y *= 1.001f;
-                }
+                // for (int i = 0; i < vertices.Length; i++) {
+                //     vertices[i] *= 1.01f;
+                // }
 
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
                 // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
@@ -131,14 +139,13 @@ namespace SharpEngine
             glBindVertexArray(vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
             UpdateTriangleBuffer();
-            glVertexAttribPointer(0, vertexSize, GL_FLOAT, false, sizeof(Vector), NULL);
-
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vector), NULL);
             glEnableVertexAttribArray(0);
         }
         
         static unsafe void UpdateTriangleBuffer() {
             fixed (Vector * vertex = &vertices[0]) {
-                glBufferData(GL_ARRAY_BUFFER, sizeof(Vector) * vertices.Length, vertex, GL_STATIC_DRAW);
+                glBufferData(GL_ARRAY_BUFFER, sizeof(Vector) * vertices.Length, vertex, GL_DYNAMIC_DRAW);
             }
         }
 
