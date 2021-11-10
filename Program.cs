@@ -9,11 +9,19 @@ namespace SharpEngine
     {
         static float[] vertices = new float[] {
             // vertex 1 x, y, z
-            -.5f, -.5f, 0f,
+            -.1f, -.1f, 0f,
             // vertex 2 x, y, z
-            .5f, -.5f, 0f,
+            .1f, -.1f, 0f,
             // vertex 3 x, y, z
-            0f, .5f, 0f
+            0f, .1f, 0f,
+                     
+            // vertex 4 x, y, z
+            .4f, .4f, 0f,
+            // vertex 5 x, y, z
+            .6f, .4f, 0f,
+            // vertex 6 x, y, z
+            .5f, .6f, 0f
+            
         };
 
         private const int vertexX = 0;
@@ -46,10 +54,15 @@ namespace SharpEngine
                 // }
                 //
                 // Scale Down
-                for (int i = 0; i < vertices.Length; i++) {
-                    vertices[i] *= 0.9999f;
-                }
-                
+                // for (int i = 0; i < vertices.Length; i++) {
+                //     vertices[i] *= 0.9999f;
+                // }
+                //
+                //Scale Up
+                // for (int i = 0; i < vertices.Length; i++) {
+                //     vertices[i] *= 1.0001f;
+                // }
+
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
                 // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
                 //
