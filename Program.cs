@@ -83,12 +83,12 @@ namespace SharpEngine
         static void CreateShaderProgram() {
             // create vertex shader
             var vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, File.ReadAllText("shaders/red-triangle.vert"));
+            glShaderSource(vertexShader, File.ReadAllText("shaders/screen-coordinates.vert"));
             glCompileShader(vertexShader);
 
             // create fragment shader
             var fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, File.ReadAllText("shaders/green-triangle.frag"));
+            glShaderSource(fragmentShader, File.ReadAllText("shaders/green.frag"));
             glCompileShader(fragmentShader);
 
             // create shader program - rendering pipeline
