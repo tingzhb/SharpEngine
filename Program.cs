@@ -60,9 +60,9 @@ namespace SharpEngine
                 Render(window);
                 
                 // Move Right
-                for (int i = 0; i < vertices.Length; i++) {
-                    vertices[i].x += 0.001f;
-                }
+                // for (int i = 0; i < vertices.Length; i++) {
+                //     vertices[i].x += 0.001f;
+                // }
                 
                 // // Move Down
                 // for (int i = 0; i < vertices.Length; i++) {
@@ -78,7 +78,12 @@ namespace SharpEngine
                 // for (int i = 0; i < vertices.Length; i++) {
                 //     vertices[i] *= 1.01f;
                 // }
-
+                
+                //Move Top Right and stop
+                for (int i = 0; i < vertices.Length; i++) {
+                    vertices[i] *= 1.01f;
+                }
+                
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
                 // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
                 //
