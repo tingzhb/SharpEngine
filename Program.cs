@@ -17,6 +17,7 @@ namespace SharpEngine
         };
 
         private const int vertexX = 0;
+        private const int vertexY = 1;
         private const int vertexSize = 3;
         
         private static double radians;
@@ -33,9 +34,15 @@ namespace SharpEngine
                 Glfw.PollEvents(); // react to window changes (position etc.)
                 ClearScreen();
                 Render();
-
+                
+                // Move Right
                 for (int i = vertexX; i < vertices.Length; i+= vertexSize) {
                     vertices[i] += 0.0001f;
+                }
+                
+                // Move Down
+                for (int i = vertexY; i < vertices.Length; i+= vertexSize) {
+                    vertices[i] -= 0.0001f;
                 }
                 
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
