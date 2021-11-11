@@ -18,41 +18,59 @@ namespace SharpEngine
             this.y = y;
             this.z = 0;
         }
-        public static Vector operator * (Vector v, float f) {
+        public static Vector operator *(Vector v, float f) {
             return new Vector(v.x * f, v.y * f, v.z * f);
         }
-        public static Vector operator + (Vector lhs, Vector rhs) {
+        public static Vector operator +(Vector lhs, Vector rhs) {
             return new Vector(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
         }
-        public static Vector operator - (Vector lhs, Vector rhs) {
+        public static Vector operator -(Vector lhs, Vector rhs) {
             return new Vector(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
         }
-        public static Vector operator / (Vector v, float f) {
+        public static Vector operator /(Vector v, float f) {
             return new Vector(v.x / f, v.y / f, v.z / f);
+        }
+        
+        public static Vector Max(Vector a, Vector b) {
+            return new Vector(MathF.Max(a.x, b.x), MathF.Max(a.y, b.y), MathF.Max(a.z, b.z));
+        }
+
+        public static Vector Min(Vector a, Vector b) {
+            return new Vector(MathF.Min(a.x, b.x), MathF.Min(a.y, b.y), MathF.Min(a.z, b.z));
+
         }
     }
     
     class Program
     {
+        
         static Vector[] vertices = new Vector[] {
             // new Vector(-.1f, -.1f),
             // new Vector(.1f, -.1f),
-            // new Vector(0f, .1f)
+            // new Vector(0f, .1f),
+            //
+            // new Vector(.2f, .5f),
+            // new Vector(.4f, .5f),
+            // new Vector(.3f, .7f),
             
-            new Vector(.2f, .5f),
-            new Vector(.4f, .5f),
-            new Vector(.3f, .7f)
+            new Vector(-.4f, -.4f),
+            new Vector(-.2f, -.4f),
+            new Vector(-.3f, -.2f),
         };
         
         private static double radians;
         
         static void Main(string[] args) {
+            
+            
             var window = CreateWindow();
 
             LoadTriangleIntoBuffer();
 
             CreateShaderProgram();
             var direction = new Vector(0.01f,0.02f);
+            var scale = 1f;
+            var multiplier = 0.9f;
             // engine rendering loop
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
@@ -74,41 +92,69 @@ namespace SharpEngine
                 //     vertices[i] *= 0.99f;
                 // }
                 
-                //Scale Up
+                // Scale Up
                 // for (int i = 0; i < vertices.Length; i++) {
                 //     vertices[i] *= 1.01f;
                 // }
                 
-                //Move And Bounce
+                // Move to top right
                 for (var i = 0; i < vertices.Length; i++) {
                     vertices[i] += direction;
                 }
+                
+                // Find center of object
+                var min = vertices[0];
+                for (var i = 0; i < vertices.Length; i++) {
+                    min = Vector.Min(min, vertices[i]);
+                }
+                
+                var max = vertices[0];
+                for (var i = 0; i < vertices.Length; i++) {
+                    max = Vector.Max(max, vertices[i]);
+                }
 
+                var center = (min + max) / 2;
+                
+                // Move object to center
                 for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].x >= 1) {
+                    vertices[i] -= center;
+                }
+                
+                // Scale down to X% and up
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] *= multiplier;
+                }
+                
+                scale *= multiplier;
+                if (scale <= 0.2f) {
+                    multiplier = 1.05f;
+                }
+                
+                if (scale >= 2f) {
+                    multiplier = 0.95f;
+                }
+                
+                // Move object back
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] += center;
+                }
+
+                
+                // Bounce
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].x >= 1 && direction.x >= 0 || vertices[i].x <= -1 && direction.x <= 0) {
                         direction.x *= -1;
-                    }
-                }
-                
-                for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].y >= 1) {
-                        direction.y *= -1;
-                    }
-                }
-                
-                for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].x <= -1) {
-                        direction.x *= -1;
-                    }
-                }
-                
-                for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].y <= -1) {
-                        direction.y *= -1;
                         break;
                     }
                 }
                 
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].y >= 1 && direction.y >= 0 || vertices[i].y <= -1 && direction.y <= 0) {
+                        direction.y *= -1;
+                        break;
+                    }
+                }
+
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
                 // vertices[1] = Convert.ToSingle(Math.Cos(radians)) * -0.5f;
                 //
@@ -133,6 +179,8 @@ namespace SharpEngine
                 UpdateTriangleBuffer();
             }
         }
+
+        
         private static void Render(Window window) {
             glDrawArrays(GL_TRIANGLES, 0, vertices.Length);
             Glfw.SwapBuffers(window);
