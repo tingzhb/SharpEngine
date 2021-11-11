@@ -1,14 +1,21 @@
 ﻿using System.IO;
+using System.Numerics;
 using GLFW;
 using static OpenGL.Gl;
 
 namespace SharpEngine
 {
+    public struct Vertex {
+        public Vector position;
 
+        public Vertex(Vector position) {
+            this.position = position;
+        }
+    }
     class Program
     {
         
-        static Vector[] vertices = new Vector[] {
+        static Vertex[] vertices = new Vertex[] {
             // new Vector(-.1f, -.1f),
             // new Vector(.1f, -.1f),
             // new Vector(0f, .1f),
@@ -17,12 +24,10 @@ namespace SharpEngine
             // new Vector(.4f, .5f),
             // new Vector(.3f, .7f),
             
-            new Vector(-.4f, -.4f),
-            new Vector(-.2f, -.4f),
-            new Vector(-.3f, -.2f),
+            new Vertex(new Vector(-.4f, -.4f)),
+            new Vertex(new Vector(-.2f, -.4f)),
+            new Vertex(new Vector(-.3f, -.2f)),
         };
-        
-        private static double radians;
         
         static void Main(string[] args) {
             
@@ -43,46 +48,46 @@ namespace SharpEngine
                 
                 // Move Right
                 // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i].x += 0.001f;
+                //     vertices[i].position.x += 0.001f;
                 // }
                 
                 // // Move Down
                 // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i].y -= 0.001f;
+                //     vertices[i].position.y -= 0.001f;
                 // }
                 
                 // Scale Down
                 // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i] *= 0.99f;
+                //     vertices[i].position *= 0.99f;
                 // }
                 
                 // Scale Up
                 // for (int i = 0; i < vertices.Length; i++) {
-                //     vertices[i] *= 1.01f;
+                //     vertices[i].position *= 1.01f;
                 // }
                 
                 
                 // Find center of object
-                var min = vertices[0];
+                var min = vertices[0].position;
                 for (var i = 0; i < vertices.Length; i++) {
-                    min = Vector.Min(min, vertices[i]);
+                    min = Vector.Min(min, vertices[i].position);
                 }
                 
-                var max = vertices[0];
+                var max = vertices[0].position;
                 for (var i = 0; i < vertices.Length; i++) {
-                    max = Vector.Max(max, vertices[i]);
+                    max = Vector.Max(max, vertices[i].position);
                 }
 
                 var center = (min + max) / 2;
                 
                 // Move object to center
                 for (var i = 0; i < vertices.Length; i++) {
-                    vertices[i] -= center;
+                    vertices[i].position -= center;
                 }
                 
                 // Scale down to X% and up
                 for (var i = 0; i < vertices.Length; i++) {
-                    vertices[i] *= multiplier;
+                    vertices[i].position *= multiplier;
                 }
                 
                 scale *= multiplier;
@@ -96,25 +101,25 @@ namespace SharpEngine
                 
                 // Move to top right
                 for (var i = 0; i < vertices.Length; i++) {
-                    vertices[i] += direction;
+                    vertices[i].position += direction;
                 }
                 
                 // Move object back
                 for (var i = 0; i < vertices.Length; i++) {
-                    vertices[i] += center;
+                    vertices[i].position += center;
                 }
 
                 
                 // Bounce
                 for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].x >= 1 && direction.x >= 0 || vertices[i].x <= -1 && direction.x <= 0) {
+                    if (vertices[i].position.x >= 1 && direction.x >= 0 || vertices[i].position.x <= -1 && direction.x <= 0) {
                         direction.x *= -1;
                         break;
                     }
                 }
                 
                 for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].y >= 1 && direction.y >= 0 || vertices[i].y <= -1 && direction.y <= 0) {
+                    if (vertices[i].position.y >= 1 && direction.y >= 0 || vertices[i].position.y <= -1 && direction.y <= 0) {
                         direction.y *= -1;
                         break;
                     }
@@ -187,8 +192,8 @@ namespace SharpEngine
         }
         
         static unsafe void UpdateTriangleBuffer() {
-            fixed (Vector * vertex = &vertices[0]) {
-                glBufferData(GL_ARRAY_BUFFER, sizeof(Vector) * vertices.Length, vertex, GL_DYNAMIC_DRAW);
+            fixed (Vector * vertex = &vertices[0].position) {
+                glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.Length, vertex, GL_DYNAMIC_DRAW);
             }
         }
 
