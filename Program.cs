@@ -21,11 +21,11 @@ namespace SharpEngine
         public static Vector operator * (Vector v, float f) {
             return new Vector(v.x * f, v.y * f, v.z * f);
         }
-        public static Vector operator + (Vector v, float f) {
-            return new Vector(v.x + f, v.y + f, v.z + f);
+        public static Vector operator + (Vector lhs, Vector rhs) {
+            return new Vector(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
         }
-        public static Vector operator - (Vector v, float f) {
-            return new Vector(v.x - f, v.y - f, v.z - f);
+        public static Vector operator - (Vector lhs, Vector rhs) {
+            return new Vector(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
         }
         public static Vector operator / (Vector v, float f) {
             return new Vector(v.x / f, v.y / f, v.z / f);
@@ -35,13 +35,13 @@ namespace SharpEngine
     class Program
     {
         static Vector[] vertices = new Vector[] {
-            new Vector(-.1f, -.1f),
-            new Vector(.1f, -.1f),
-            new Vector(0f, .1f),
+            // new Vector(-.1f, -.1f),
+            // new Vector(.1f, -.1f),
+            // new Vector(0f, .1f)
             
-            new Vector(.4f, .4f),
-            new Vector(.6f, .4f),
-            new Vector(.5f, .6f)
+            new Vector(.2f, .5f),
+            new Vector(.4f, .5f),
+            new Vector(.3f, .7f)
         };
         
         private static double radians;
@@ -52,7 +52,7 @@ namespace SharpEngine
             LoadTriangleIntoBuffer();
 
             CreateShaderProgram();
-
+            var direction = new Vector(0.01f,0.02f);
             // engine rendering loop
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
@@ -79,9 +79,34 @@ namespace SharpEngine
                 //     vertices[i] *= 1.01f;
                 // }
                 
-                //Move Top Right and stop
-                for (int i = 0; i < vertices.Length; i++) {
-                    vertices[i] *= 1.01f;
+                //Move And Bounce
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] += direction;
+                }
+
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].x >= 1) {
+                        direction.x *= -1;
+                    }
+                }
+                
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].y >= 1) {
+                        direction.y *= -1;
+                    }
+                }
+                
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].x <= -1) {
+                        direction.x *= -1;
+                    }
+                }
+                
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].y <= -1) {
+                        direction.y *= -1;
+                        break;
+                    }
                 }
                 
                 // vertices[0] = Convert.ToSingle(Math.Sin(radians)) * -0.5f;
