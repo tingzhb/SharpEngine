@@ -5,13 +5,6 @@ using static OpenGL.Gl;
 
 namespace SharpEngine
 {
-    public struct Vertex {
-        public Vector position;
-
-        public Vertex(Vector position) {
-            this.position = position;
-        }
-    }
     class Program
     {
         
@@ -24,9 +17,9 @@ namespace SharpEngine
             // new Vector(.4f, .5f),
             // new Vector(.3f, .7f),
             
-            new Vertex(new Vector(-.4f, -.4f)),
-            new Vertex(new Vector(-.2f, -.4f)),
-            new Vertex(new Vector(-.3f, -.2f)),
+            new Vertex(new Vector(-.4f, -.4f), Color.Red),
+            new Vertex(new Vector(-.2f, -.4f), Color.Green),
+            new Vertex(new Vector(-.3f, -.2f), Color.Blue),
         };
         
         static void Main(string[] args) {
@@ -187,7 +180,7 @@ namespace SharpEngine
             glBindVertexArray(vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
             UpdateTriangleBuffer();
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vector), NULL);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), NULL);
             glEnableVertexAttribArray(0);
         }
         
