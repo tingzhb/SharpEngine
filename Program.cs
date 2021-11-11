@@ -68,7 +68,7 @@ namespace SharpEngine
             LoadTriangleIntoBuffer();
 
             CreateShaderProgram();
-            var direction = new Vector(0.01f,0.02f);
+            var direction = new Vector(0.015f,0.02f);
             var scale = 1f;
             var multiplier = 0.9f;
             // engine rendering loop
@@ -97,10 +97,6 @@ namespace SharpEngine
                 //     vertices[i] *= 1.01f;
                 // }
                 
-                // Move to top right
-                for (var i = 0; i < vertices.Length; i++) {
-                    vertices[i] += direction;
-                }
                 
                 // Find center of object
                 var min = vertices[0];
@@ -132,6 +128,11 @@ namespace SharpEngine
                 
                 if (scale >= 2f) {
                     multiplier = 0.95f;
+                }
+                
+                // Move to top right
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] += direction;
                 }
                 
                 // Move object back
