@@ -37,8 +37,6 @@ namespace SharpEngine
                 ClearScreen();
                 Render(window);
                 
-                triangle.Scale(multiplier);
-                
                 if (triangle.CurrentScale <= 0.2f) {
                     multiplier = 1.05f;
                 }
@@ -47,6 +45,8 @@ namespace SharpEngine
                     multiplier = 0.95f;
                 }
                 
+                triangle.Scale(multiplier);
+
                 triangle.Move(direction);
                 
 

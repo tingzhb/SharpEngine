@@ -1,4 +1,5 @@
-﻿using OpenGL;
+﻿using System.Numerics;
+using OpenGL;
 
 namespace SharpEngine {
 	public class Triangle {
@@ -26,9 +27,13 @@ namespace SharpEngine {
 			return min;
 		}
 
+		public Vector GetCenter() {
+			return (GetMinBounds() + GetMaxBounds()) / 2;
+		}
+
 		public void Scale(float multiplier) {
 			// Move object to center, scale, move back
-			var center = (GetMinBounds() + GetMaxBounds()) / 2;
+			var center = GetCenter();
 			Move(center*-1);
 			for (var i = 0; i < vertices.Length; i++) {
 				vertices[i].position *= multiplier;
