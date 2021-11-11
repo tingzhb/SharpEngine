@@ -5,65 +5,9 @@ using GLFW;
 using static OpenGL.Gl;
 
 namespace SharpEngine
-{        
-    public class Triangle {
-        private Vertex[] vertices;
-        public Triangle(Vertex[] vertices) {
-            this.vertices = vertices;
-            CurrentScale = 1f;
-        }
-        public float CurrentScale {get; private set;}
-
-        public Vector GetMaxBounds() {
-            
-            var max = vertices[0].position;
-            for (var i = 0; i < vertices.Length; i++) {
-                max = Vector.Max(max, vertices[i].position);
-            }
-            return max;
-        }
-
-        public Vector GetMinBounds() {
-            var min = vertices[0].position;
-            for (var i = 0; i < vertices.Length; i++) {
-                min = Vector.Min(min, vertices[i].position);
-            }
-            return min;
-        }
-
-        public void Scale(float multiplier) {
-            // Find center of object
-            var center = (GetMinBounds() + GetMaxBounds()) / 2;
-                
-            // Move object to center
-            for (var i = 0; i < vertices.Length; i++) {
-                vertices[i].position -= center;
-            }
-                
-            // Scale down to X% and up
-            for (var i = 0; i < vertices.Length; i++) {
-                vertices[i].position *= multiplier;
-            }
-            
-            // Move object back
-            for (var i = 0; i < vertices.Length; i++) {
-                vertices[i].position += center;
-            }
-            this.CurrentScale *= multiplier;
-        }
-        public void Move(Vector direction) {
-            for (var i = 0; i < vertices.Length; i++) {
-                vertices[i].position += direction;
-            }
-        }
-        public unsafe void Render() {
-            fixed (Vertex* vertex = &vertices[0]) {
-                glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.Length, vertex, GL_DYNAMIC_DRAW);
-            }
-            glDrawArrays(GL_TRIANGLES, 0, vertices.Length);
-        }
-    }
+{
     class Program {
+        
         private static Triangle triangle = new Triangle(
             new Vertex[] {
                 new Vertex(new Vector(-.1f, -.1f), Color.Green),
@@ -83,8 +27,10 @@ namespace SharpEngine
             LoadTriangleIntoBuffer();
 
             CreateShaderProgram();
+            
             var direction = new Vector(0.015f,0.02f);
             var multiplier = 0.9f;
+            
             // engine rendering loop
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
