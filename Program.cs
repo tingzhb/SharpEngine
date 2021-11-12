@@ -23,9 +23,7 @@ namespace SharpEngine
         static void Main(string[] args) {
             
             var window = CreateWindow();
-
-            LoadTriangleIntoBuffer();
-
+            
             CreateShaderProgram();
             
             var direction = new Vector(0.015f,0.02f);
@@ -88,18 +86,7 @@ namespace SharpEngine
             glUseProgram(program);
         }
 
-        static unsafe void LoadTriangleIntoBuffer() {
 
-            // load the vertices into a buffer
-            var vertexArray = glGenVertexArray();
-            var vertexBuffer = glGenBuffer();
-            glBindVertexArray(vertexArray);
-            glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), Marshal.OffsetOf(typeof(Vertex), nameof(Vertex.position)));
-            glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(Vertex), Marshal.OffsetOf(typeof(Vertex), nameof(Vertex.color)));
-            glEnableVertexAttribArray(0);
-            glEnableVertexAttribArray(1);
-        }
 
         static Window CreateWindow() {
             // initialize and configure
