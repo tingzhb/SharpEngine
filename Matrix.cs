@@ -22,6 +22,9 @@
 							  m.m21 * v.x + m.m22 * v.y + m.m23 * v.z + m.m24 * 1,
 							  m.m31 * v.x + m.m32 * v.y + m.m33 * v.z + m.m34 * 1);
 		}
+		
+
+
 		public static Matrix Translation(Vector translation) {
 			var result = Identity;
 			result.m14 = translation.x;
