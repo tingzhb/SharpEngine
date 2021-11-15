@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SharpEngine
 {
@@ -33,7 +32,13 @@ namespace SharpEngine
             var scene = new Scene();
             window.Load(scene);
 
-            FillSceneWithTriangles(scene, material);
+            // FillSceneWithTriangles(scene, material);
+            var newTriangle = new Triangle(new Vertex[] {
+                new Vertex(new Vector(-.1f, 0f), Color.Red),
+                new Vertex(new Vector(.1f, 0f), Color.Green),
+                new Vertex(new Vector(0f, .133f), Color.Blue)   
+            }, material);
+            scene.Add(newTriangle);
             
             // engine rendering loop
             var direction = new Vector(0.003f, 0.003f);

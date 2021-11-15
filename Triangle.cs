@@ -54,22 +54,12 @@ namespace SharpEngine {
 		}
 
 		public void Scale(float multiplier) {
-			// We first move the triangle to the center, to avoid
-			// the triangle moving around while scaling.
-			// Then, we move it back again.
-			var center = GetCenter();
-			Move(-center);
-			for (var i = 0; i < this.vertices.Length; i++) {
-				this.vertices[i].position *= multiplier;
-			}
-			Move(center);
-
-			this.CurrentScale *= multiplier;
 		}
 
 		public void Move(Vector direction) {
+			Matrix matrix = Matrix.Translation(direction);
 			for (var i = 0; i < this.vertices.Length; i++) {
-				this.vertices[i].position += direction;
+				this.vertices[i].position = matrix * this.vertices[i].position;
 			}
 		}
 
@@ -85,16 +75,7 @@ namespace SharpEngine {
 		}
 
 		public void Rotate(float rotation) {
-			var center = GetCenter();
-			Move(-center);
-			for (int i = 0; i < this.vertices.Length; i++) {
-				var currentRotation = Vector.Angle(this.vertices[i].position);
-				var distance = vertices[i].position.GetMagnitude();
-				var newX = MathF.Cos(currentRotation + rotation);
-				var newY = MathF.Sin(currentRotation + rotation);
-				vertices[i].position = new Vector(newX, newY) * distance;
-			}
-			Move(center);
+
 		}
 	}
 }
