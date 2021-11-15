@@ -51,11 +51,11 @@ namespace SharpEngine
                     var triangle = scene.triangles[i];
                 
                     // 2. Keep track of the Scale, so we can reverse it
-                    if (triangle.CurrentScale <= 0.5f) {
-                        multiplier = 1.001f;
+                    if (triangle.CurrentScale <= 0.25f) {
+                        multiplier = 1.01f;
                     }
                     if (triangle.CurrentScale >= 1f) {
-                        multiplier = 0.999f;
+                        multiplier = 0.99f;
                     }
                     
                     triangle.Scale(multiplier);

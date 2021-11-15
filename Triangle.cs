@@ -52,15 +52,27 @@ namespace SharpEngine {
 		public Vector GetCenter() {
 			return (GetMinBounds() + GetMaxBounds()) / 2;
 		}
-
-		public void Scale(float multiplier) {
-		}
-
+		
 		public void Move(Vector direction) {
 			Matrix matrix = Matrix.Translation(direction);
 			for (var i = 0; i < this.vertices.Length; i++) {
 				this.vertices[i].position = matrix * this.vertices[i].position;
 			}
+		}
+		
+		public void Scale(float multiplier) {
+			var offset = GetCenter();
+			Matrix matrix = Matrix.Scale(new Vector(multiplier, multiplier));
+			Move(-offset);
+			for (var i = 0; i < this.vertices.Length; i++) {
+				this.vertices[i].position = matrix * this.vertices[i].position;
+			}
+			Move(offset);
+			CurrentScale *= multiplier;
+		}
+		
+		public void Rotate(float rotation) {
+
 		}
 
 		public unsafe void Render() {
@@ -74,8 +86,5 @@ namespace SharpEngine {
 			glBindVertexArray(0);
 		}
 
-		public void Rotate(float rotation) {
-
-		}
 	}
 }

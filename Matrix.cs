@@ -29,5 +29,13 @@
 			result.m34 = translation.z;
 			return result;
 		}
+		public static Matrix Scale(Vector scale) {
+			var result = Identity;
+			result.m11 *= scale.x;
+			result.m22 *= scale.y;
+			result.m33 *= scale.z;
+			return result;
+		}
+
 	}
 }
