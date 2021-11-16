@@ -19,7 +19,6 @@ namespace SharpEngine {
 		}
 		public void Scale(float multiplier) {
 			CurrentScale *= multiplier;
-
 		}
 		
 		public void Move(Vector direction) {

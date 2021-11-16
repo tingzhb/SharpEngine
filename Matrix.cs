@@ -99,7 +99,6 @@ namespace SharpEngine {
 			result.m22 = MathF.Cos(z);
 			return result;
 		}
-
 		public static Matrix Rotation(Vector rotation) {
 			return RotationZ(rotation.z) * RotationY(rotation.y) * RotationX(rotation.x);
 		}

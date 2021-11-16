@@ -63,6 +63,8 @@ namespace SharpEngine
 					}
 					walkDirection = walkDirection.Normalize();
 					shape.Transform.Position += walkDirection * movementSpeed * fixedDeltaTime;
+
+					Console.WriteLine(MathF.Acos(Vector.Dot(shape.Transform.Position, ground.Transform.Position)));
 				}
 				window.Render();
 			}

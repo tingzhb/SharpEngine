@@ -9,7 +9,10 @@ namespace SharpEngine {
 		public static Vector Left => new Vector(-1, 0);
 		public static Vector Right => new Vector(1, 0);
 		public static Vector Zero => new Vector(0, 0);
-
+		
+		public static float Dot(Vector a, Vector b) {
+			return a.x * b.x + a.y * b.y + a.z * b.z;
+		}
 
 		public Vector(float x, float y, float z) {
 			this.x = x;
@@ -49,7 +52,6 @@ namespace SharpEngine {
 		public static Vector Min(Vector a, Vector b) {
 			return new Vector(MathF.Min(a.x, b.x), MathF.Min(a.y, b.y), MathF.Min(a.z, b.z));
 		}
-
 		public static float Angle(Vector v) {
 			return MathF.Atan2(v.y, v.x);
 		}
