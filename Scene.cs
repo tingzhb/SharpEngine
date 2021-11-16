@@ -3,19 +3,19 @@
 namespace SharpEngine {
 	public class Scene {
 
-		public List<Triangle> triangles;
+		public List<Shape> shapes;
 
 		public Scene() {
-			triangles = new List<Triangle>();
+			shapes = new List<Shape>();
 		}
 		
-		public void Add(Triangle triangle) {
-			triangles.Add(triangle);
+		public void Add(Shape shape) {
+			shapes.Add(shape);
 		}
 
 		public void Render() {
-			for (int i = 0; i < this.triangles.Count; i++) {
-				triangles[i].Render();
+			for (int i = 0; i < this.shapes.Count; i++) {
+				shapes[i].Render();
 			}
 		}
 	}
