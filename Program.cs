@@ -19,7 +19,7 @@ namespace SharpEngine
                     new Vertex(new Vector(.1f, 0f), Color.Green),
                     new Vertex(new Vector(0f, .133f), Color.Blue)
                 }, material);
-                triangle.Rotate(GetRandomFloat(random));
+                triangle.Transform.Rotate(GetRandomFloat(random));
                 triangle.Transform.Move(new Vector(GetRandomFloat(random, -1, 1), GetRandomFloat(random, -1, 1)));
                 scene.Add(triangle);
             }
@@ -69,7 +69,7 @@ namespace SharpEngine
                     }
                     
                     triangle.Transform.Scale(multiplier);
-                    triangle.Rotate(rotation);
+                    triangle.Transform.Rotate(rotation);
                     triangle.Transform.Move(direction);
                 }
                 
