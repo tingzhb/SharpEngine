@@ -56,7 +56,7 @@ namespace SharpEngine {
 			this.material.SetTransform(this.Transform.Matrix);
 			glBindVertexArray(vertexArray);
 			glBindBuffer(GL_ARRAY_BUFFER, this.vertexBuffer);
-			fixed (Vertex* vertex = &this.vertices[0]) {
+			fixed (Vertex * vertex = &this.vertices[0]) {
 				glBufferData(GL_ARRAY_BUFFER, Marshal.SizeOf<Vertex>() * this.vertices.Length, vertex, GL_DYNAMIC_DRAW);
 			}
 			glDrawArrays(GL_TRIANGLES, 0, this.vertices.Length);

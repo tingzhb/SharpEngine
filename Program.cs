@@ -28,13 +28,14 @@ namespace SharpEngine
 			scene.Add(ground);
 
 			// engine rendering loop
+			var direction = new Vector(0f, -0.003f);
 			const int fixedStepNumberPerSecond = 30;
 			const double fixedStepDuration = 1.0 / fixedStepNumberPerSecond;
 			double previousFixedStep = 0.0;
 			while (window.IsOpen()) {
 				while (Glfw.Time > previousFixedStep + fixedStepDuration) {
 					previousFixedStep += fixedStepDuration;
-                    
+                    shape.Transform.Move(direction);
 				}
 				window.Render();
 			}
