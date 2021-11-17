@@ -37,27 +37,25 @@ namespace SharpEngine
 			// rectangle.Transform.Position = new Vector(-0.2f, -0.2f);
 			// scene.Add(rectangle);
 			
-			var notCircle = new Circle(material);
-			notCircle.Transform.Position = Vector.Right * 0.5f;
-			notCircle.Mass = 6f;
-			scene.Add(notCircle);
-			
 			var circle = new Circle(material);
 			circle.Transform.Position = Vector.Left;
 			circle.velocity = Vector.Right;
-			circle.Mass = 4f;
+			circle.Mass = 1f;
 			scene.Add(circle);
 			
-			
+			var otherCircle = new Circle(material);
+			otherCircle.Transform.Position = Vector.Right * 0.5f;
+			otherCircle.Mass = 2f;
+			scene.Add(otherCircle);
 
 			// engine rendering loop
-			var direction = new Vector(0f, -0.003f);
 			const int fixedStepNumberPerSecond = 30;
 			const float fixedDeltaTime = 1.0f / fixedStepNumberPerSecond;
-			const float movementSpeed = 0.5f;
-			double previousFixedStep = 0.0;
+			const int maxStepsPerFrame = 5;
+			var previousFixedStep = 0.0;
 			while (window.IsOpen()) {
-				while (Glfw.Time > previousFixedStep + fixedDeltaTime) {
+				var stepCount = 0;
+				while (Glfw.Time > previousFixedStep + fixedDeltaTime && stepCount++ < maxStepsPerFrame) {
 					previousFixedStep += fixedDeltaTime;
 					physics.Update(fixedDeltaTime);
 				}

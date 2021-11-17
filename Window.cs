@@ -30,7 +30,7 @@ namespace SharpEngine {
 		}
 
 		static void ClearScreen() {
-			glClearColor(.2f, .05f, .2f, 1);
+			glClearColor(.2f, .05f, .1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 		}
 

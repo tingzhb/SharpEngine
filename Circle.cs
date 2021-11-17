@@ -2,14 +2,14 @@
 
 namespace SharpEngine {
 	public class Circle : Shape {
-		public float radius => .1f;
+		public float radius => .1f * Transform.CurrentScale.x;
 
 		public Circle(Material material) : base(CreateCircle(), material) {
 		}
 		
 		static Vertex[] CreateCircle() {
 			const int numberOfSegments = 32;
-			const int verticesPerSegment = 3;
+			const int verticesPerSegment = 5;
 			const float scale = .1f;
 			Vertex[] result = new Vertex[numberOfSegments*verticesPerSegment];
 			const float circleRadians = MathF.PI * 2;

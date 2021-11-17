@@ -1,4 +1,7 @@
-﻿namespace SharpEngine {
+﻿using System;
+using System.Diagnostics;
+
+namespace SharpEngine {
 	public class Physics {
 		readonly Scene scene;
 
@@ -33,17 +36,56 @@
 
 					if (collision) {
 						Vector collisionNormal = deltaPosition.Normalize();
-						Vector otherCollisionNormal = (shape.GetCenter() - other.GetCenter()).Normalize();
-						Vector collisionVelocity = Vector.Dot(shape.velocity, collisionNormal) * collisionNormal;
-						Vector otherCollisionVelocity = Vector.Dot(other.velocity, otherCollisionNormal) * otherCollisionNormal;
-						Vector newCollisionVelocity = collisionVelocity * (shape.Mass - other.Mass) + otherCollisionVelocity * (other.Mass + other.Mass) / (shape.Mass + other.Mass);
-						Vector newOtherCollisionVelocity = otherCollisionVelocity * (other.Mass - shape.Mass) + collisionVelocity * (shape.Mass + shape.Mass) / (other.Mass + shape.Mass);
+						Vector shapeVelocity = Vector.Dot(shape.velocity, collisionNormal) * collisionNormal;
+						Vector otherVelocity = Vector.Dot(other.velocity, collisionNormal) * collisionNormal;
 
-						shape.velocity += newCollisionVelocity - collisionVelocity;
-						other.velocity += newOtherCollisionVelocity - otherCollisionVelocity;
+						float totalMass = other.Mass + shape.Mass;
+						float massDifference = shape.Mass - other.Mass;
+						float shapeImpactRatio = massDifference / totalMass;
+
+						Vector velocityChange = (-1 + shapeImpactRatio) * shapeVelocity + (1 - shapeImpactRatio) * otherVelocity;
+						Vector otherVelocityChange = (-1 - shapeImpactRatio) * otherVelocity + (1 + shapeImpactRatio) * shapeVelocity;
+						
+		AssertPhysicalCorrectness(shape.Mass, shape.velocity, other.Mass, other.velocity, shape.Mass, shape.velocity + velocityChange, other.Mass, other.velocity + otherVelocityChange);
+
+						shape.velocity += velocityChange;
+						other.velocity += otherVelocityChange;
 					}
 				}
 			}
+		}
+
+		static Vector CalculateTotalMomentum(float m1, Vector v1, float m2, Vector v2) {
+			return CalculateMomentum(m1, v1) + CalculateMomentum(m2, v2);
+		}
+		
+		static Vector CalculateMomentum(float mass, Vector velocity) {
+			return mass * velocity;
+		}
+
+		static float CalculateTotalKineticEnergy(float m1, Vector v1, float m2, Vector v2) {
+			return CalculateKineticEnergy(m1, v1) + CalculateKineticEnergy(m2, v2);
+		}
+
+		static float CalculateKineticEnergy(float mass, Vector velocity) {
+			return 0.5f * mass * velocity.GetSquareMagnitude();
+		}
+
+		static void AssertPhysicalCorrectness(float m1, Vector v1, float m2, Vector v2, float m1_, Vector v1_, float m2_, Vector v2_, float tolerance = 0.00001f) {
+			AssertPreservationOfMomentum(m1, v1, m2, v2, m1_, v1_, m2_, v2_);
+			AssertPreservationOfKineticEnergy(m1, v1, m2, v2, m1_, v1_, m2_, v2_);
+		}
+
+		static void AssertPreservationOfKineticEnergy(float m1, Vector v1, float m2, Vector v2, float m1_, Vector v1_, float m2_, Vector v2_, float tolerance = 0.00001f) {
+			float oldTotalKineticEnergy = CalculateTotalKineticEnergy(m1, v1, m2, v2);
+			float newTotalKineticEnergy = CalculateTotalKineticEnergy(m1_, v1_, m2_, v2_);
+			Debug.Assert(MathF.Abs(oldTotalKineticEnergy - newTotalKineticEnergy) < tolerance, $"Kinetic energy was not preserved. Old: {oldTotalKineticEnergy} New: {newTotalKineticEnergy}");
+		}
+
+		static void AssertPreservationOfMomentum(float m1, Vector v1, float m2, Vector v2, float m1_, Vector v1_, float m2_, Vector v2_, float tolerance = 0.00001f) {
+			Vector oldMomentum = CalculateTotalMomentum(m1, v1, m2, v2);
+			Vector newMomentum = CalculateTotalMomentum(m1_, v1_, m2_, v2_);
+			Debug.Assert((oldMomentum - newMomentum).GetMagnitude() < tolerance, $"Momentum was not preserved. Old: {oldMomentum} New: {newMomentum}");
 		}
 	}
 }
