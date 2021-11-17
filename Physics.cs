@@ -46,7 +46,7 @@ namespace SharpEngine {
 						Vector velocityChange = (-1 + shapeImpactRatio) * shapeVelocity + (1 - shapeImpactRatio) * otherVelocity;
 						Vector otherVelocityChange = (-1 - shapeImpactRatio) * otherVelocity + (1 + shapeImpactRatio) * shapeVelocity;
 						
-		AssertPhysicalCorrectness(shape.Mass, shape.velocity, other.Mass, other.velocity, shape.Mass, shape.velocity + velocityChange, other.Mass, other.velocity + otherVelocityChange);
+						AssertPhysicalCorrectness(shape.Mass, shape.velocity, other.Mass, other.velocity, shape.Mass, shape.velocity + velocityChange, other.Mass, other.velocity + otherVelocityChange);
 
 						shape.velocity += velocityChange;
 						other.velocity += otherVelocityChange;
