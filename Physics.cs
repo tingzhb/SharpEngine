@@ -17,7 +17,7 @@ namespace SharpEngine {
 				// linear velocity:
 				shape.Transform.Position = shape.Transform.Position + shape.velocity * deltaTime;
 				
-				// a = F/m (another version ∏of F = ma)
+				// a = F/m (another version of F = ma)
 				var acceleration = shape.linearForce * shape.MassInverse;
 				
 				// add gravity to acceleration
