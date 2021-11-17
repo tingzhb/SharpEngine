@@ -2,6 +2,7 @@
 
 namespace SharpEngine {
 	public class Circle : Shape {
+		public float radius => .1f;
 
 		public Circle(Material material) : base(CreateCircle(), material) {
 		}
