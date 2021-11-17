@@ -10,6 +10,9 @@ namespace SharpEngine {
 
 		public Transform Transform { get; }
 		public Material material;
+		public const float mass = 1f;
+		public Vector velocity; // momentum = product of velocity & mass
+		public Vector linearForce;
             
 		public Shape(Vertex[] vertices, Material material) {
 			this.vertices = vertices;
@@ -17,7 +20,6 @@ namespace SharpEngine {
 			LoadTriangleIntoBuffer();
 			this.Transform = new Transform();
 		}
-
 		public void SetColor(Color color) {
 			for (int i = 0; i < this.vertices.Length; i++) {
 				vertices[i].color = color;

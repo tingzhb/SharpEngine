@@ -18,26 +18,32 @@ namespace SharpEngine
 			var window = new Window();
 			var material = new Material("shaders/world-position-color.vert", "shaders/vertex-color.frag");
 			var scene = new Scene();
+			var physics = new Physics(scene);
 			window.Load(scene);
 
-			var shape = new Triangle(material);
-			shape.Transform.CurrentScale = new Vector(.5f, 1f, 1f);
-			scene.Add(shape);
+			// var shape = new Triangle(material);
+			// shape.Transform.CurrentScale = new Vector(.5f, 1f, 1f);
+			// scene.Add(shape);
+			//
+			// var ground = new Rectangle(material);
+			// ground.Transform.CurrentScale = new Vector(10f, 1f, 1f);
+			// ground.Transform.Position = new Vector(0f, -1f);
+			// scene.Add(ground);
+			//
+			//
+			// var rectangle = new Rectangle(material);
+			// rectangle.Transform.CurrentScale = new Vector(1f, 1f, 1f);
+			// rectangle.Transform.Position = new Vector(-0.2f, -0.2f);
+			// scene.Add(rectangle);
 			
-			var ground = new Rectangle(material);
-			ground.Transform.CurrentScale = new Vector(10f, 1f, 1f);
-			ground.Transform.Position = new Vector(0f, -1f);
-			scene.Add(ground);
-
-			
-			var rectangle = new Rectangle(material);
-			rectangle.Transform.CurrentScale = new Vector(1f, 1f, 1f);
-			rectangle.Transform.Position = new Vector(-0.2f, -0.2f);
-			scene.Add(rectangle);
+			var notCircle = new Circle(material);
+			notCircle.Transform.Position = Vector.Left + Vector.Backward;
+			notCircle.linearForce = Vector.Right;
+			scene.Add(notCircle);
 			
 			var circle = new Circle(material);
-			circle.Transform.CurrentScale = new Vector(1f, 1f, 1f);
-			circle.Transform.Position = new Vector(0.2f, -0.2f);
+			circle.Transform.Position = Vector.Left;
+			circle.velocity = Vector.Right;
 			scene.Add(circle);
 			
 			
@@ -51,50 +57,8 @@ namespace SharpEngine
 			while (window.IsOpen()) {
 				while (Glfw.Time > previousFixedStep + fixedDeltaTime) {
 					previousFixedStep += fixedDeltaTime;
-					var walkDirection = new Vector();
-					if (window.GetKey(Keys.W)) {
-						walkDirection += shape.Transform.Forward;
-					}
-					if (window.GetKey(Keys.S)) {
-						walkDirection += shape.Transform.Backward;
-					}
-					if (window.GetKey(Keys.A)) {
-						walkDirection += shape.Transform.Left;
-					}
-					if (window.GetKey(Keys.D)) {
-						walkDirection += shape.Transform.Right;
-					}
-					
-					if (window.GetKey(Keys.Q)) {
-						var rotation = shape.Transform.Rotation;
-						rotation.z += MathF.PI * fixedDeltaTime;
-						shape.Transform.Rotation = rotation;
-					}
-					if (window.GetKey(Keys.E)) {
-						var rotation = shape.Transform.Rotation;
-						rotation.z -= MathF.PI * fixedDeltaTime;
-						shape.Transform.Rotation = rotation;
-					}
-					walkDirection = walkDirection.Normalize();
-					shape.Transform.Position += walkDirection * movementSpeed * fixedDeltaTime;
-					
-					float dir = Vector.Dot((rectangle.GetCenter() - shape.GetCenter()).Normalize(), shape.Transform.Forward);
-					bool doesThePlayerFaceTheRectangle = dir > 0.9;
-				
-					Console.WriteLine(dir);
-					if (doesThePlayerFaceTheRectangle) {
-						rectangle.SetColor(Color.Green);
-					}
-					else {
-						rectangle.SetColor(Color.Red);
-					}
-					float dotProduct = Vector.Dot((circle.GetCenter() - shape.GetCenter()).Normalize(), shape.Transform.Forward);
-					float angle = MathF.Acos(dotProduct);
-					float factor = angle / MathF.PI;
-					circle.SetColor(new Color(0, 0, factor, 1));
-					Console.WriteLine(factor);
+					physics.Update(fixedDeltaTime);
 				}
-
 				window.Render();
 			}
 		}
