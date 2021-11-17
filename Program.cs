@@ -27,13 +27,20 @@ namespace SharpEngine
 			var ground = new Rectangle(material);
 			ground.Transform.CurrentScale = new Vector(10f, 1f, 1f);
 			ground.Transform.Position = new Vector(0f, -1f);
+			scene.Add(ground);
+
 			
 			var rectangle = new Rectangle(material);
-			shape.Transform.CurrentScale = new Vector(.5f, 1f, 1f);
+			rectangle.Transform.CurrentScale = new Vector(1f, 1f, 1f);
+			rectangle.Transform.Position = new Vector(-0.2f, -0.2f);
 			scene.Add(rectangle);
-			rectangle.SetColor(Color.Red);
 			
-			scene.Add(ground);
+			var circle = new Circle(material);
+			circle.Transform.CurrentScale = new Vector(1f, 1f, 1f);
+			circle.Transform.Position = new Vector(0.2f, -0.2f);
+			scene.Add(circle);
+			
+			
 
 			// engine rendering loop
 			var direction = new Vector(0f, -0.003f);
@@ -70,17 +77,24 @@ namespace SharpEngine
 					}
 					walkDirection = walkDirection.Normalize();
 					shape.Transform.Position += walkDirection * movementSpeed * fixedDeltaTime;
-				}
+					
+					float dir = Vector.Dot((rectangle.GetCenter() - shape.GetCenter()).Normalize(), shape.Transform.Forward);
+					bool doesThePlayerFaceTheRectangle = dir > 0.9;
 				
-				float dir = Vector.Dot((rectangle.GetCenter() - shape.GetCenter()).Normalize(), shape.Transform.Forward);
-				bool doesThePlayerFaceTheRectangle = dir > 0.9;
-				Console.WriteLine(dir);
-				if (doesThePlayerFaceTheRectangle) {
-					rectangle.SetColor(Color.Green);
+					Console.WriteLine(dir);
+					if (doesThePlayerFaceTheRectangle) {
+						rectangle.SetColor(Color.Green);
+					}
+					else {
+						rectangle.SetColor(Color.Red);
+					}
+					float dotProduct = Vector.Dot((circle.GetCenter() - shape.GetCenter()).Normalize(), shape.Transform.Forward);
+					float angle = MathF.Acos(dotProduct);
+					float factor = angle / MathF.PI;
+					circle.SetColor(new Color(0, 0, factor, 1));
+					Console.WriteLine(factor);
 				}
-				else {
-					rectangle.SetColor(Color.Red);
-				}
+
 				window.Render();
 			}
 		}
