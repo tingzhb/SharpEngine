@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using GLFW;
 
 namespace SharpEngine
@@ -26,6 +27,12 @@ namespace SharpEngine
 			var ground = new Rectangle(material);
 			ground.Transform.CurrentScale = new Vector(10f, 1f, 1f);
 			ground.Transform.Position = new Vector(0f, -1f);
+			
+			var rectangle = new Rectangle(material);
+			shape.Transform.CurrentScale = new Vector(.5f, 1f, 1f);
+			scene.Add(rectangle);
+			rectangle.SetColor(Color.Red);
+			
 			scene.Add(ground);
 
 			// engine rendering loop
@@ -63,8 +70,16 @@ namespace SharpEngine
 					}
 					walkDirection = walkDirection.Normalize();
 					shape.Transform.Position += walkDirection * movementSpeed * fixedDeltaTime;
-
-					Console.WriteLine(MathF.Acos(Vector.Dot(shape.Transform.Position, ground.Transform.Position)));
+				}
+				
+				float dir = Vector.Dot((rectangle.GetCenter() - shape.GetCenter()).Normalize(), shape.Transform.Forward);
+				bool doesThePlayerFaceTheRectangle = dir > 0.9;
+				Console.WriteLine(dir);
+				if (doesThePlayerFaceTheRectangle) {
+					rectangle.SetColor(Color.Green);
+				}
+				else {
+					rectangle.SetColor(Color.Red);
 				}
 				window.Render();
 			}
