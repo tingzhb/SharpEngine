@@ -25,10 +25,11 @@ namespace SharpEngine
 			// shape.Transform.CurrentScale = new Vector(.5f, 1f, 1f);
 			// scene.Add(shape);
 			//
-			// var ground = new Rectangle(material);
-			// ground.Transform.CurrentScale = new Vector(10f, 1f, 1f);
-			// ground.Transform.Position = new Vector(0f, -1f);
-			// scene.Add(ground);
+			var ground = new Rectangle(material);
+			ground.Transform.CurrentScale = new Vector(10f, 1f, 1f);
+			ground.Transform.Position = new Vector(0f, -1f);
+			ground.gravityScale = 0;
+			scene.Add(ground);
 			//
 			//
 			// var rectangle = new Rectangle(material);
@@ -37,7 +38,7 @@ namespace SharpEngine
 			// scene.Add(rectangle);
 			
 			var notCircle = new Circle(material);
-			notCircle.Transform.Position = Vector.Left + Vector.Backward;
+			notCircle.Transform.Position = Vector.Left + Vector.Down;
 			notCircle.linearForce = Vector.Right;
 			scene.Add(notCircle);
 			

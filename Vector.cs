@@ -6,6 +6,8 @@ namespace SharpEngine {
 
 		public static Vector Forward => new Vector(0, 0.5f);
 		public static Vector Backward => new Vector(0, -0.5f);
+		public static Vector Down => new Vector(0, -0.5f);
+
 		public static Vector Left => new Vector(-0.5f, 0);
 		public static Vector Right => new Vector(0.5f, 0);
 		public static Vector Zero => new Vector(0, 0);
