@@ -21,7 +21,7 @@ namespace SharpEngine
 			var physics = new Physics(scene);
 			window.Load(scene);
 			
-			for (var i = 0; i < 10; i++) {
+			for (var i = 0; i < 12; i++) {
 				var circle = new Circle(material);
 				var radius = GetRandomFloat(random, 0.3f);
 				circle.Transform.CurrentScale = new Vector(radius, radius, 1f);
@@ -59,7 +59,7 @@ namespace SharpEngine
 			// scene.Add(otherCircle);
 
 			// engine rendering loop
-			const int fixedStepNumberPerSecond = 30;
+			const int fixedStepNumberPerSecond = 60;
 			const float fixedDeltaTime = 1.0f / fixedStepNumberPerSecond;
 			const int maxStepsPerFrame = 5;
 			var previousFixedStep = 0.0;

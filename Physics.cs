@@ -32,20 +32,18 @@ namespace SharpEngine {
 					Circle other = this.scene.shapes[j] as Circle;
 					// check for collision
 					Vector deltaPosition = other.GetCenter() - shape.GetCenter();
-					bool collision = deltaPosition.GetMagnitude() < shape.radius + other.radius;
+					bool collision = deltaPosition.GetSquareMagnitude() <= (shape.radius + other.radius) * (shape.radius + other.radius);
 
 					if (collision) {
 						Vector collisionNormal = deltaPosition.Normalize();
 						Vector shapeVelocity = Vector.Dot(shape.velocity, collisionNormal) * collisionNormal;
 						Vector otherVelocity = Vector.Dot(other.velocity, collisionNormal) * collisionNormal;
-
-						float totalMass = other.Mass + shape.Mass;
-						float massDifference = shape.Mass - other.Mass;
-						float shapeImpactRatio = massDifference / totalMass;
-
-						Vector velocityChange = (-1 + shapeImpactRatio) * shapeVelocity + (1 - shapeImpactRatio) * otherVelocity;
-						Vector otherVelocityChange = (-1 - shapeImpactRatio) * otherVelocity + (1 + shapeImpactRatio) * shapeVelocity;
 						
+						float totalMass = other.Mass + shape.Mass;
+
+						Vector velocityChange = 2*other.Mass/totalMass * (otherVelocity - shapeVelocity);
+						Vector otherVelocityChange = 2 * shape.Mass / totalMass * (shapeVelocity - otherVelocity); //-shape.Mass / other.Mass * velocityChange;
+
 						AssertPhysicalCorrectness(shape.Mass, shape.velocity, other.Mass, other.velocity, shape.Mass, shape.velocity + velocityChange, other.Mass, other.velocity + otherVelocityChange);
 
 						shape.velocity += velocityChange;
