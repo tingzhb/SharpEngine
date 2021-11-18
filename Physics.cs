@@ -32,16 +32,26 @@ namespace SharpEngine {
 					Circle other = this.scene.shapes[j] as Circle;
 					// check for collision
 					Vector deltaPosition = other.GetCenter() - shape.GetCenter();
-					bool collision = deltaPosition.GetSquareMagnitude() <= (shape.radius + other.radius) * (shape.radius + other.radius);
+					float squareOverlap = (shape.radius + other.radius) * (shape.radius + other.radius) - deltaPosition.GetSquareMagnitude();
 
-					if (collision) {
+					if (squareOverlap > 0) {
+						// Collision Resolution
+						float overlap = MathF.Sqrt(squareOverlap);
 						Vector collisionNormal = deltaPosition.Normalize();
+						float totalMass = other.Mass + shape.Mass;
+						
+						// Interprenetaion Resolvement
+						other.Transform.Position += overlap * shape.Mass / totalMass * collisionNormal;
+						shape.Transform.Position -= overlap * other.Mass / totalMass * collisionNormal;
+						
+						// Collision Impusles
+						// calculate part of shape's velocity that is parallel to the collision normal
 						Vector shapeVelocity = Vector.Dot(shape.velocity, collisionNormal) * collisionNormal;
+						// calculate part of other shape's velocity that is parallel to the collision normal
 						Vector otherVelocity = Vector.Dot(other.velocity, collisionNormal) * collisionNormal;
 						
-						float totalMass = other.Mass + shape.Mass;
 
-						Vector velocityChange = 2*other.Mass/totalMass * (otherVelocity - shapeVelocity);
+						Vector velocityChange = 2 * other.Mass/totalMass * (otherVelocity - shapeVelocity);
 						Vector otherVelocityChange = 2 * shape.Mass / totalMass * (shapeVelocity - otherVelocity); //-shape.Mass / other.Mass * velocityChange;
 
 						AssertPhysicalCorrectness(shape.Mass, shape.velocity, other.Mass, other.velocity, shape.Mass, shape.velocity + velocityChange, other.Mass, other.velocity + otherVelocityChange);

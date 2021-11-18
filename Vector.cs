@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 
 namespace SharpEngine {
 	public struct Vector {
@@ -68,7 +67,7 @@ namespace SharpEngine {
 		}
 
 		public float GetSquareMagnitude() {
-			return x * x + y * y + z * z;
+			return Dot(this, this);
 		}
 
 		public Vector Normalize() {

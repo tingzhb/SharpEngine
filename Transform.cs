@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using static OpenGL.Gl;
-
+﻿
 namespace SharpEngine {
 	public class Transform {
 		public Vector CurrentScale { get; set; }
